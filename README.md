@@ -23,6 +23,7 @@ Mini-projet full-stack : une API de **catalogue de produits** (back-end **Django
 ## Lancer le back-end
 
 ```bash
+cd backend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -49,6 +50,7 @@ Front disponible sur http://localhost:5173/ (il appelle l'API sur le port 8002).
 ## Tests
 
 ```bash
+cd backend
 python manage.py test
 ```
 
@@ -56,10 +58,11 @@ python manage.py test
 
 ```
 django-marketplace-api/
-├── config/        # réglages du projet Django (settings, urls)
-├── catalogue/     # app métier : models, serializers, views, tests
-├── frontend/      # app React (Vite)
-└── manage.py
+├── backend/            # back-end Django / DRF
+│   ├── config/         # réglages du projet (settings, urls)
+│   ├── catalogue/      # app métier : models, serializers, views, tests
+│   └── manage.py
+└── frontend/           # front-end React (Vite)
 ```
 
 Le front React et le back Django sont deux couches séparées : le back expose les données en JSON via l'API, le front les affiche. C'est l'architecture classique d'une application web moderne.

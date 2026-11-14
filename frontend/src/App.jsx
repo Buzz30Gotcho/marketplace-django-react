@@ -1,63 +1,45 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Routes, Route, NavLink } from "react-router-dom";
+import { isLoggedIn, logout } from "./api";
+import Catalog from "./pages/Catalog";
+import Manage from "./pages/Manage";
 import "./App.css";
 
-const API_URL = "http://127.0.0.1:8002/api/products/";
-
 function App() {
-  const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [logged, setLogged] = useState(isLoggedIn());
 
-  // Recharge la liste depuis l'API a chaque changement de recherche
-  useEffect(() => {
-    setLoading(true);
-    const url = search ? `${API_URL}?search=${encodeURIComponent(search)}` : API_URL;
-
-    fetch(url)
-      .then((res) => {
-        if (!res.ok) throw new Error("Impossible de contacter l'API");
-        return res.json();
-      })
-      .then((data) => {
-        setProducts(data.results);
-        setError(null);
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [search]);
+  const handleLogout = () => {
+    logout();
+    setLogged(false);
+  };
 
   return (
     <div className="app">
-      <header className="topbar">
-        <h1>Catalogue produits</h1>
-        <input
-          type="search"
-          className="search"
-          placeholder="Rechercher un produit..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </header>
+      <nav className="navbar">
+        <span className="brand">Marketplace</span>
+        <div className="nav-links">
+          <NavLink to="/" end>
+            Catalogue
+          </NavLink>
+          <NavLink to="/gestion">Gestion</NavLink>
+        </div>
+        {logged && (
+          <button className="btn-logout" onClick={handleLogout}>
+            Se deconnecter
+          </button>
+        )}
+      </nav>
 
-      {error && <p className="state error">Erreur : {error}</p>}
-      {loading && <p className="state">Chargement...</p>}
-      {!loading && !error && products.length === 0 && (
-        <p className="state">Aucun produit trouve.</p>
-      )}
+      <main className="content">
+        <Routes>
+          <Route path="/" element={<Catalog />} />
+          <Route path="/gestion" element={<Manage logged={logged} setLogged={setLogged} />} />
+        </Routes>
+      </main>
 
-      <div className="grid">
-        {products.map((p) => (
-          <article className="card" key={p.id}>
-            <h2>{p.name}</h2>
-            <p className="desc">{p.description || "Pas de description"}</p>
-            <p className="price">{p.price} &euro;</p>
-            <p className="meta">
-              Stock : {p.stock} &middot; {p.supplier}
-            </p>
-          </article>
-        ))}
-      </div>
+      <footer className="footer">
+        Projet Django REST Framework + React &middot; Frederic Makha SAR
+      </footer>
     </div>
   );
 }

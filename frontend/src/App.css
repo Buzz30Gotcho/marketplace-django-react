@@ -1,8 +1,11 @@
 :root {
   --accent: #0b5394;
+  --accent-dark: #083b6b;
   --ink: #1a1a1a;
   --muted: #666;
   --border: #e2e6ea;
+  --bg: #f4f6f8;
+  --danger: #b00020;
 }
 
 * {
@@ -11,30 +14,100 @@
 
 body {
   margin: 0;
-  background: #f4f6f8;
+  background: var(--bg);
   color: var(--ink);
   font-family: system-ui, Arial, sans-serif;
 }
 
 .app {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 24px 20px 60px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.topbar {
+/* ---------- Navbar ---------- */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 28px;
+  height: 60px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.navbar .brand {
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 18px;
+  flex: 1;
+}
+
+.nav-links a {
+  color: #dbe6f2;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-links a.active {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+.btn-logout {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.btn-logout:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---------- Layout ---------- */
+.content {
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 20px 48px;
+}
+
+.footer {
+  text-align: center;
+  padding: 18px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+h1 {
+  color: var(--accent);
+  margin: 0 0 18px;
+}
+
+/* ---------- Catalogue ---------- */
+.page-head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
-.topbar h1 {
+.page-head h1 {
   margin: 0;
-  color: var(--accent);
-  font-size: 1.6rem;
 }
 
 .search {
@@ -44,21 +117,34 @@ body {
   border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 0.95rem;
-  outline: none;
 }
 
 .search:focus {
+  outline: none;
   border-color: var(--accent);
 }
 
-.state {
-  color: var(--muted);
-  text-align: center;
-  padding: 20px 0;
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
 }
 
-.state.error {
-  color: #b00020;
+.chip {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--ink);
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.chip.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
 }
 
 .grid {
@@ -68,6 +154,7 @@ body {
 }
 
 .card {
+  position: relative;
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -78,6 +165,16 @@ body {
 .card:hover {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   transform: translateY(-2px);
+}
+
+.card .tag {
+  display: inline-block;
+  background: #eaf1f8;
+  color: var(--accent);
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 8px;
 }
 
 .card h2 {
@@ -102,4 +199,145 @@ body {
   margin: 0;
   font-size: 0.8rem;
   color: var(--muted);
+}
+
+.state {
+  color: var(--muted);
+  text-align: center;
+  padding: 20px 0;
+}
+
+.state.error {
+  color: var(--danger);
+}
+
+/* ---------- Boutons / formulaires ---------- */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-primary:hover {
+  background: var(--accent-dark);
+}
+
+.btn-del {
+  background: #fff;
+  color: var(--danger);
+  border: 1px solid #f0c9cf;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-del:hover {
+  background: #fdf0f2;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ---------- Connexion ---------- */
+.login-box {
+  max-width: 340px;
+  margin: 40px auto;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+}
+
+.login-box h1 {
+  margin-bottom: 4px;
+}
+
+.login-box .hint {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 0;
+}
+
+.login-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---------- Gestion ---------- */
+.panel {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 20px;
+}
+
+.panel h2 {
+  margin: 0 0 14px;
+  font-size: 1.15rem;
+}
+
+.inline-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.inline-form input {
+  flex: 1;
+}
+
+.product-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.product-form textarea {
+  grid-column: 1 / -1;
+  min-height: 70px;
+  resize: vertical;
+}
+
+.product-form .btn-primary {
+  grid-column: 1 / -1;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.list li:last-child {
+  border-bottom: none;
 }

@@ -248,6 +248,13 @@ textarea {
   padding: 9px 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9aa0a6;
 }
 
 input:focus,

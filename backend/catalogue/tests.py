@@ -31,4 +31,22 @@ class ProductAPITests(TestCase):
 
     def test_create_requires_authentication(self):
         response = self.client.post("/api/products/", {"name": "Banane"})
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
+
+    def test_authenticated_user_can_create(self):
+        from django.contrib.auth.models import User
+
+        user = User.objects.create_user(username="staff", password="pass12345")
+        self.client.force_authenticate(user=user)
+        response = self.client.post(
+            "/api/products/",
+            {
+                "name": "Banane",
+                "price": "2.00",
+                "stock": 5,
+                "supplier": "Primeur Local",
+                "category": self.category.id,
+            },
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Product.objects.count(), 2)
